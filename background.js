@@ -113,7 +113,7 @@ function generateHomographs(domain) {
 }
 
 async function domainExists(domains, tld) {
-    existingHomographs = [];
+    existingHomographs = {};
     chrome.storage.local.set({ existingHomographs: existingHomographs });
 
     for (domain of domains) {
@@ -125,8 +125,10 @@ async function domainExists(domains, tld) {
                 //console.log(data);
                 if (data['Status'] == 0) {
                     chrome.storage.local.get(['existingHomographs'], function (result) {
-                        val = [data['Question'][0].name, punycode.ToUnicode(data['Question'][0].name)];
-                        result.existingHomographs.push(val);
+                        //val = [data['Question'][0].name, punycode.ToUnicode(data['Question'][0].name)];
+                        //result.existingHomographs.push(val);
+                        result.existingHomographs[data['Question'][0].name] = punycode.ToUnicode(data['Question'][0].name);
+                        //console.log(result.existingHomographs.push(val));
                         chrome.storage.local.set({ existingHomographs: result.existingHomographs });
                     });
                 }
